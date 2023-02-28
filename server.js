@@ -3,7 +3,7 @@ const multer = require('multer')
 const sharp = require('sharp')
 const fs = require('fs')
 
-
+//https://www.delftstack.com/es/howto/javascript/javascript-download/
 const storage = multer.diskStorage({
     destination: function(req,file,cb) {
         cb(null, 'uploads')
