@@ -1,7 +1,11 @@
 {
   "name": "conv-img",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "conversor de formato de imágenes",
+  "repository": { 
+    "type": "git", 
+    "url": "https://github.com/danielsanchez68/convImg.git" 
+  },
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

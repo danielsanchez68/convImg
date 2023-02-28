@@ -51,5 +51,5 @@ app.post('/upload', upload.single('archivo'), async (req,res) => {
 
 /*  -------------------- SERVIDOR LISTEN ---------------------- */
 const PORT = process.env.PORT || 8080
-const server = app.listen(PORT, () => console.log(`El servidor express está escuchando en http://localhost:8080`))
+const server = app.listen(PORT, () => console.log(`El servidor express está escuchando en http://localhost:${PORT}`))
 server.on('error', error => console.log(`Error en servidor: ${error.message}`))
