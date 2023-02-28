@@ -8,6 +8,9 @@
     "start": "node server.js",
     "watch": "nodemon server.js -i uploads/* -i public/*"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
