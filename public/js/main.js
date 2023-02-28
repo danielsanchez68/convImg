@@ -41,7 +41,21 @@ form.addEventListener('submit', e => {
                 document.body.removeChild(link);
         
                 setTimeout(() => {
-                    location.href = '/clear?file=' + url
+                    //location.href = '/clear?file=' + url
+                    const xhr = new XMLHttpRequest()
+                    xhr.open('get', '/clear?file=' + url)
+                    xhr.addEventListener('load', () => {
+                        if(xhr.status == 200) {
+                            input.value = ''
+                            
+                            porcentaje = 0
+                            progressDownload.value = porcentaje
+                            infoDownload.innerText = porcentaje + '%'
+                            progressUpload.value = porcentaje
+                            infoUpload.innerText = porcentaje + '%'
+                        }
+                    })
+                    xhr.send()
                 },1500)
             }
         })
@@ -51,7 +65,7 @@ form.addEventListener('submit', e => {
         xhr.addEventListener('progress', e => {
             if(e.lengthComputable) {
                 porcentaje = parseInt((e.loaded * 100) / e.total)
-                console.warn(porcentaje + '%')
+                //console.warn(porcentaje + '%')
     
                 progressDownload.value = porcentaje
                 infoDownload.innerText = porcentaje + '%'
@@ -87,7 +101,7 @@ function enviarFormDataAjax(url, data, cb) {
     xhr.upload.addEventListener('progress', e => {
         if(e.lengthComputable) {
             porcentaje = parseInt((e.loaded * 100) / e.total)
-            console.warn(porcentaje + '%')
+            //console.warn(porcentaje + '%')
 
             progressUpload.value = porcentaje
             infoUpload.innerText = porcentaje + '%'

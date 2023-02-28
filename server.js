@@ -27,9 +27,8 @@ app.get('/ping', (req,res) => {
 app.get('/clear', async (req,res) => {
     const { file } = req.query
     await fs.promises.unlink('./public' + file)
-    res.redirect('/')
+    res.json({status: 'ok'})
 })
-
 
 app.post('/upload', upload.single('archivo'), async (req,res) => {
     //console.log(req.file)
