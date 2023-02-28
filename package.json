@@ -9,7 +9,7 @@
     "watch": "nodemon server.js -i uploads/* -i public/*"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=18"
   },
   "keywords": [],
   "author": "",
