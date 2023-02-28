@@ -2,7 +2,6 @@ const express = require('express')
 const multer = require('multer')
 const sharp = require('sharp')
 const fs = require('fs')
-const cors = require('cors')
 
 
 const storage = multer.diskStorage({
@@ -17,7 +16,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 const app = express()
-app.use(cors())
 
 app.use(express.static('public'))
 app.use(express.json())
