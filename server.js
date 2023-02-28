@@ -32,6 +32,7 @@ app.get('/clear', async (req,res) => {
     res.redirect('/')
 })
 
+
 app.post('/upload', upload.single('archivo'), async (req,res) => {
     //console.log(req.file)
     const { path, originalname } = req.file
