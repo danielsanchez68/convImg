@@ -31,18 +31,34 @@ app.get('/clear', async (req,res) => {
 
 app.post('/upload', upload.single('archivo'), async (req,res) => {
     //console.log(req.file)
-    const { path, originalname } = req.file
+    try {
+        const { path, originalname } = req.file
+        const width = Number(req.body.width)
+        const height = Number(req.body.height)
 
-    const file = `./public/conv/${originalname}`
+        const file = `./public/conv/${originalname}`
+        //console.log(width, height)
 
-    await sharp(path)
-    .resize({ width: 1920 })
-    .toFile(file)
+        const options = {}
+        if(width) options.width = width
+        if(height) options.height = height
 
-    await fs.promises.unlink(path)
+        await sharp(path)
+        .resize(options)
+        .toFile(file)
 
-    //res.redirect('/')
-    res.json({url: file.replace('./public','')})
+        await fs.promises.unlink(path)
+        res.json({url: file.replace('./public','')})
+    }
+    catch(error) {
+        //res.redirect('/')
+        const files = await fs.promises.readdir('./uploads')
+        files.forEach(async file => {
+            if(file != 'readme.txt') await fs.promises.unlink('./uploads/' + file)
+        });
+
+        res.json({error : error.message})
+    }
 })
 
 /* ---------------------------------------------------------------------------------- */

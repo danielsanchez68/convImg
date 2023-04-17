@@ -6,21 +6,33 @@ const progressDownload = document.querySelectorAll('progress')[1]
 const infoUpload = document.querySelectorAll('span')[0]
 const infoDownload = document.querySelectorAll('span')[1]
 
+const infoError = document.querySelector('h3')
+
+form[0].addEventListener('change', () => {
+    progressUpload.value = 0
+    progressDownload.value = 0
+    infoError.innerText = ''
+})
+
 form.addEventListener('submit', e => {
     e.preventDefault()
     
-    const input = form[0]
+    const inputFile = form[0]
+    const inputWidth = form[1]
+    const inputHeight = form[2]
 
     //creo un FormData vacío
     let data = new FormData()
     
     //Cargo la información del archivo en ese formdata en forma manual
-    data.append('archivo', input.files[0])
+    data.append('archivo', inputFile.files[0])
+    data.append('width', inputWidth.value)
+    data.append('height', inputHeight.value)
 
     //Envío el FormData al servidor
     enviarFormDataAjax('/upload',data, url => {
         //console.log(url)
-        //input.value = ''
+        //inputFile.value = ''
         let porcentaje = 0
         progressDownload.value = porcentaje
         infoDownload.innerText = porcentaje + '%'
@@ -46,7 +58,9 @@ form.addEventListener('submit', e => {
                     xhr.open('get', '/clear?file=' + url)
                     xhr.addEventListener('load', () => {
                         if(xhr.status == 200) {
-                            input.value = ''
+                            inputFile.value = ''
+                            inputWidth.value = ''
+                            inputHeight.value = ''
                             
                             porcentaje = 0
                             progressDownload.value = porcentaje
@@ -61,6 +75,8 @@ form.addEventListener('submit', e => {
         })
         xhr.addEventListener('error', e => {
             console.error('Error en la comunicación download ajax', e)
+            repreError('Error en la comunicación download ajax', e)
+
         })
         xhr.addEventListener('progress', e => {
             if(e.lengthComputable) {
@@ -87,16 +103,21 @@ function enviarFormDataAjax(url, data, cb) {
     xhr.open('post',url)
     xhr.addEventListener('load', () => {
         if(xhr.status == 200) {
-            //console.log(xhr.response)
-            const { url } = JSON.parse(xhr.response)
-            cb(url)
+            console.log(xhr.response)
+            const { url, error } = JSON.parse(xhr.response)
+            if(error) {
+                repreError('ERROR:', error)
+            }
+            else cb(url)
         }
         else {
             console.error('Error el enviar los datos', xhr.status)
+            repreError('Error el enviar los datos', xhr.status)
         }
     })
     xhr.addEventListener('error', e => {
         console.error('Error en la comunicación upload ajax', e)
+        repreError('Error en la comunicación upload ajax', e)
     })
     xhr.upload.addEventListener('progress', e => {
         if(e.lengthComputable) {
@@ -111,3 +132,13 @@ function enviarFormDataAjax(url, data, cb) {
     })
     xhr.send(data)
 }
+
+
+function repreError(title, body) {
+    const text = `${title}: ${ typeof body == 'object'? JSON.stringify(body) : body }`
+    infoError.innerText = text
+
+    /* setTimeout(() => {
+        infoError.innerText = ''
+    },1000) */
+}   
