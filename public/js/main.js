@@ -20,6 +20,7 @@ form.addEventListener('submit', e => {
     const inputFile = form[0]
     const inputWidth = form[1]
     const inputHeight = form[2]
+    const inputPng = form[3]
 
     //creo un FormData vacío
     let data = new FormData()
@@ -28,6 +29,7 @@ form.addEventListener('submit', e => {
     data.append('archivo', inputFile.files[0])
     data.append('width', inputWidth.value)
     data.append('height', inputHeight.value)
+    data.append('png', inputPng.checked)
 
     //Envío el FormData al servidor
     enviarFormDataAjax('/upload',data, url => {
@@ -61,6 +63,7 @@ form.addEventListener('submit', e => {
                             inputFile.value = ''
                             inputWidth.value = ''
                             inputHeight.value = ''
+                            inputPng.checked = false
                             
                             porcentaje = 0
                             progressDownload.value = porcentaje
